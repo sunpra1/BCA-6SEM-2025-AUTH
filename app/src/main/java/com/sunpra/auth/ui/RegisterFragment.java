@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -38,6 +39,8 @@ public class RegisterFragment extends Fragment {
 
     TextInputLayout confirmPasswordTil;
     TextInputEditText confirmPasswordEt;
+
+    ConstraintLayout progressLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class RegisterFragment extends Fragment {
         confirmPasswordTil = view.findViewById(R.id.confirmPasswordTil);
         confirmPasswordEt = view.findViewById(R.id.confirmPassword);
 
+        progressLayout = view.findViewById(R.id.progressLayout);
+
         view.findViewById(R.id.registerBtn).setOnClickListener((registerBtnView) -> {
             viewModel.onRegisterClicked(
                     Objects.requireNonNull(fullNameEt.getText()).toString(),
@@ -87,6 +92,13 @@ public class RegisterFragment extends Fragment {
         viewModel.formErrors.observe(requireActivity(), formErrors -> {
             handleFormErrors(formErrors);
         });
+        viewModel.isLoading.observe(requireActivity(), this::handleIsLoading);
+    }
+
+    private void handleIsLoading(Boolean isLoading) {
+        progressLayout.setVisibility(
+                isLoading ? View.VISIBLE : View.GONE
+        );
     }
 
     private void handleFormErrors(Map<String, String> formErrors) {
@@ -98,26 +110,26 @@ public class RegisterFragment extends Fragment {
         fullNameTil.setError(fullNameError);
         fullNameTil.setErrorEnabled(fullNameError != null);
 
-        if(emailError != null){
+        if (emailError != null) {
             emailTil.setError(emailError);
             emailTil.setErrorEnabled(true);
-        }else{
+        } else {
             emailTil.setError(null);
             emailTil.setErrorEnabled(false);
         }
 
-        if(passwordError != null){
+        if (passwordError != null) {
             passwordTil.setError(passwordError);
             passwordTil.setErrorEnabled(true);
-        }else{
+        } else {
             passwordTil.setError(null);
             passwordTil.setErrorEnabled(false);
         }
 
-        if(confirmPasswordError != null){
+        if (confirmPasswordError != null) {
             confirmPasswordTil.setError(confirmPasswordError);
             confirmPasswordTil.setErrorEnabled(true);
-        }else{
+        } else {
             confirmPasswordTil.setError(null);
             confirmPasswordTil.setErrorEnabled(false);
         }

@@ -59,7 +59,7 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,12 +86,36 @@
             android:id="@+id/registerBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:minHeight="52dp"
             android:layout_margin="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTil"
+            android:minHeight="52dp"
+            android:text="Register"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTil" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:allowClickWhenDisabled="false"
+            android:visibility="gone">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:indeterminate="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
