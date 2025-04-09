@@ -97,11 +97,10 @@
             android:id="@+id/progressLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:allowClickWhenDisabled="false"
-            android:visibility="gone">
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:background="#66000000">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:layout_width="wrap_content"

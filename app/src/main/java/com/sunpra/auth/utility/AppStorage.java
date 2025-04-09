@@ -13,7 +13,7 @@ public class AppStorage {
     SharedPreferences sharedPreferences;
 
     public AppStorage(Context context) {
-        context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
     }
 
     public void saveToken(String token){

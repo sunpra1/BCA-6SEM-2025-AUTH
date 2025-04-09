@@ -5,10 +5,12 @@ import static com.sunpra.auth.ui.RegisterViewModel.KEY_EMAIL;
 import static com.sunpra.auth.ui.RegisterViewModel.KEY_FULL_NAME;
 import static com.sunpra.auth.ui.RegisterViewModel.KEY_PASSWORD;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sunpra.auth.R;
+import com.sunpra.auth.data.pojo.UserResponse;
 
 import java.util.Map;
 import java.util.Objects;
@@ -93,12 +96,35 @@ public class RegisterFragment extends Fragment {
             handleFormErrors(formErrors);
         });
         viewModel.isLoading.observe(requireActivity(), this::handleIsLoading);
+        viewModel.message.observe(requireActivity(), this::handleMessage);
+        viewModel.onRegisterSuccess.observe(requireActivity(), this::handleRegistrationSuccess);
+    }
+
+    private void handleRegistrationSuccess(UserResponse userResponse) {
+        Toast.makeText(
+                requireActivity(),
+                userResponse.getName() + " Logged in successfully.",
+                Toast.LENGTH_LONG
+        ).show();
+        //Now navigate to dashboard or home screen
+
     }
 
     private void handleIsLoading(Boolean isLoading) {
         progressLayout.setVisibility(
                 isLoading ? View.VISIBLE : View.GONE
         );
+    }
+
+    private void handleMessage(String message) {
+        new AlertDialog.Builder(requireActivity())
+                .setTitle("Message")
+                .setMessage(message)
+                .setPositiveButton(
+                        "OK",
+                        (dialog, which) -> dialog.dismiss()
+                )
+                .show();
     }
 
     private void handleFormErrors(Map<String, String> formErrors) {

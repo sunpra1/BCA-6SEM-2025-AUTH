@@ -13,9 +13,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sunpra.auth.data.pojo.RegisterBody;
 import com.sunpra.auth.data.pojo.RegisterResponse;
+import com.sunpra.auth.data.pojo.UserResponse;
 import com.sunpra.auth.utility.AppStorage;
 import com.sunpra.auth.utility.ServiceProvider;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,12 @@ public class RegisterViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
     LiveData<Boolean> isLoading = _isLoading;
+
+    private MutableLiveData<UserResponse> _onRegisterSuccess = new MutableLiveData<>();
+    LiveData<UserResponse> onRegisterSuccess = _onRegisterSuccess;
+
+    private MutableLiveData<String> _message = new MutableLiveData<>();
+    LiveData<String> message = _message;
 
     private AppStorage appStorage;
 
@@ -124,10 +133,7 @@ public class RegisterViewModel extends AndroidViewModel {
             String password,
             String confirmPassword
     ) {
-
-        Log.d("TEST", "TOKEN: " + appStorage.getToken());
-        if (validate(fullName, email, password, confirmPassword)
-        ) {
+        if (validate(fullName, email, password, confirmPassword)) {
             registerUser(
                     new RegisterBody(
                             fullName,
@@ -150,7 +156,7 @@ public class RegisterViewModel extends AndroidViewModel {
                     if(registerResponse == null)
                         throw new RuntimeException("No Register response available.");
                     appStorage.saveToken(registerResponse.getToken());
-//                    _registrationSuccess.postValue(registerResponse.getUser());
+                    _onRegisterSuccess.postValue(registerResponse.getUser());
                 } else {
                     //{"email":["The email has already been taken."]}
                     try (ResponseBody errorRes = response.errorBody()) {
@@ -176,6 +182,11 @@ public class RegisterViewModel extends AndroidViewModel {
             } catch (Exception e) {
                 // If IO Exception and UnknownHostException there is no Internet.
                 Log.e("API_FAILED", "registerUser: ", e);
+                if(e instanceof IOException){
+                    _message.postValue("Please check your internet connection and try again.");
+                }else{
+                    _message.postValue("Something went wrong please try again later.");
+                }
             }finally {
                 _isLoading.postValue(false);
             }
