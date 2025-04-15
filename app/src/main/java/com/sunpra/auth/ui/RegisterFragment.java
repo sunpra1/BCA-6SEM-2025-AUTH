@@ -107,7 +107,9 @@ public class RegisterFragment extends Fragment {
                 Toast.LENGTH_LONG
         ).show();
         //Now navigate to dashboard or home screen
-
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, HomeFragment.newInstance(userResponse))
+                .commit();
     }
 
     private void handleIsLoading(Boolean isLoading) {
