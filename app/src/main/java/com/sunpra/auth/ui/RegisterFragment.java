@@ -10,11 +10,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,7 +28,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sunpra.auth.R;
 import com.sunpra.auth.data.pojo.UserResponse;
+import com.sunpra.auth.model.Country;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -89,6 +98,58 @@ public class RegisterFragment extends Fragment {
                     confirmPasswordEt.getText().toString()
             );
         });
+        GridView countriesList = view.findViewById(R.id.countries);
+        List<String> countries= Arrays.asList("Nepal", "India", "Bangladesh", "Pakistan", "Bhutan", "Sri Lanka");
+
+        List<Country> countriesWithFlag = Arrays.asList(
+                new Country(
+                        R.drawable.flag_of_nepal,
+                        R.string.nepal
+                ),
+                new Country(
+                        R.drawable.flag_of_india,
+                        R.string.india
+                )
+        );
+
+        countriesList.setAdapter(
+                new ArrayAdapter<>(
+                        requireContext(),
+                        R.layout.country_list_item,
+                        countriesWithFlag
+                ){
+                    private View inflateView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+                        View view = LayoutInflater.from(requireContext()).inflate(R.layout.country_list_item, parent, false);
+
+                        TextView countryName = view.findViewById(R.id.country);
+                        ImageView countryFlag = view.findViewById(R.id.flag);
+
+                        Country country = countriesWithFlag.get(position);
+                        countryName.setText(
+                                getString(country.getName())
+//                                getString(R.string.nepal)
+                        );
+
+                        countryFlag.setImageDrawable(
+                                ContextCompat.getDrawable(requireContext(), country.getFlag())
+                        );
+
+                        return view;
+                    }
+
+
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        return inflateView(position, convertView, parent);
+                    }
+
+                    @Override
+                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        return inflateView(position, convertView, parent);
+                    }
+                }
+        );
     }
 
     private void setupObservers() {
