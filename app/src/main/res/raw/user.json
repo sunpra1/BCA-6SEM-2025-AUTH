@@ -1,0 +1,28 @@
+[
+  {
+    "first_name": "Sunil",
+    "last_name": "Prasai",
+    "email": "sunpra12@gmail.com",
+    "address": {
+      "country": "Nepal",
+      "region": "Bagmati",
+      "district": "Kathmandu",
+      "address_line": "Kapan, Budhanilkantha - 11",
+      "isInsideRingroad": false,
+      "house_no": 1001
+    }
+  },
+  {
+    "first_name": "Arina",
+    "last_name": "Poudel",
+    "email": "arina@gmail.com",
+    "address": {
+      "country": "Nepal",
+      "region": "Bagmati",
+      "district": "Kathmandu",
+      "address_line": "Kapan, Budhanilkantha - 11",
+      "isInsideRingroad": false,
+      "house_no": 101
+    }
+  }
+]
